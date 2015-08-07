@@ -118,8 +118,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if (canvas != null) {
             final int savedState = canvas.save();
             canvas.scale(scaleFactorX, scaleFactorY);
+
             bg.draw(canvas);
             player.draw(canvas);
+            for (Smokepuff sp : smoke) {
+                sp.draw(canvas);
+            }
+
             canvas.restoreToCount(savedState);
         }
     }
