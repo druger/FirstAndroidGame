@@ -37,7 +37,6 @@ public class MainThread extends Thread {
 
             //try locking the canvas for pixel editing
             try {
-                // получаем объект Canvas и выполняем отрисовку
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder){
                     this.gamePanel.update();
@@ -48,7 +47,6 @@ public class MainThread extends Thread {
             } finally {
                 if (canvas != null){
                     try {
-                        // отрисовка выполнена. выводим результат на экран
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     } catch (Exception e){
                         e.printStackTrace();

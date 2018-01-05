@@ -2,6 +2,7 @@ package com.druger.firstandroidgame.animation;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.NonNull;
 
 /**
  * Created by druger on 15.08.2015.
@@ -13,39 +14,44 @@ public class Explosion {
     private int height;
     private int row;
     private Animation animation = new Animation();
-    private Bitmap spritesheet;
+    private Bitmap spriteSheet;
 
     public Explosion(Bitmap res, int x, int y, int width, int height, int numFrames) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        spriteSheet = res;
 
-        Bitmap[] image = new Bitmap[numFrames];
+        Bitmap[] image = createSpriteSheet(numFrames);
+        setupAnimation(image);
+    }
 
-        spritesheet = res;
-
-        for (int i = 0; i < image.length; i++) {
-            if (i % 5 == 0 && i > 0) row++;
-            image[i] = Bitmap.createBitmap(spritesheet, (i-(5*row))*width, row*width, width, height);
-        }
+    private void setupAnimation(Bitmap[] image) {
         animation.setFrames(image);
         animation.setDelay(10);
     }
 
-    public void draw(Canvas canvas){
-        if (!animation.isPlayedOnce()){
+    @NonNull
+    private Bitmap[] createSpriteSheet(int numFrames) {
+        Bitmap[] image = new Bitmap[numFrames];
+
+        for (int i = 0; i < image.length; i++) {
+            if (i % 5 == 0 && i > 0) row++;
+            image[i] = Bitmap.createBitmap(spriteSheet, (i - (5 * row)) * this.width, row * this.width, this.width, this.height);
+        }
+        return image;
+    }
+
+    public void draw(Canvas canvas) {
+        if (!animation.isPlayedOnce()) {
             canvas.drawBitmap(animation.getImage(), x, y, null);
         }
     }
 
-    public void update(){
-        if (!animation.isPlayedOnce()){
+    public void update() {
+        if (!animation.isPlayedOnce()) {
             animation.update();
         }
-    }
-
-    public int getHeight() {
-        return height;
     }
 }

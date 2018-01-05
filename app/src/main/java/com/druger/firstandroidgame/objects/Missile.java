@@ -2,6 +2,7 @@ package com.druger.firstandroidgame.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.NonNull;
 
 import com.druger.firstandroidgame.animation.Animation;
 
@@ -21,29 +22,43 @@ public class Missile extends GameObject {
         super.y = y;
         super.width = width;
         super.height = height;
-
-        speed = 7 + (int) (rand.nextDouble()*score/30);
-
-        //cap missile speed
-        if (speed >= 40) speed = 40;
-
-        Bitmap[] image = new Bitmap[numFrames];
         spritesheet = res;
 
-        for (int i = 0; i < image.length; i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
-        }
+        setupSpeed(score);
 
+        Bitmap[] image = createSpriteSheet(numFrames);
+        setupAnimation(image);
+    }
+
+    private void setupAnimation(Bitmap[] image) {
         animation.setFrames(image);
         animation.setDelay(100 - speed);
     }
 
-    public void update(){
-        x-= speed;
+    @NonNull
+    private Bitmap[] createSpriteSheet(int numFrames) {
+        Bitmap[] image = new Bitmap[numFrames];
+
+        for (int i = 0; i < image.length; i++) {
+            image[i] = Bitmap.createBitmap(spritesheet, 0, i * this.height, this.width, this.height);
+        }
+        return image;
+    }
+
+    private void setupSpeed(int score) {
+        speed = 7 + (int) (rand.nextDouble() * score / 30);
+
+        if (speed >= 40) {
+            speed = 40;
+        }
+    }
+
+    public void update() {
+        x -= speed;
         animation.update();
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         try {
             canvas.drawBitmap(animation.getImage(), x, y, null);
         } catch (Exception e) {

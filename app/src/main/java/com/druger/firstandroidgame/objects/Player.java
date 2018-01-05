@@ -2,6 +2,7 @@ package com.druger.firstandroidgame.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.NonNull;
 
 import com.druger.firstandroidgame.animation.Animation;
 import com.druger.firstandroidgame.view.GamePanel;
@@ -25,42 +26,51 @@ public class Player extends GameObject {
         score = 0;
         height = h;
         width = w;
-
-        Bitmap[] image = new Bitmap[numFrames];
         spritesheet = res;
 
-        for (int i = 0; i < image.length; i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, i*width, 0, width, height);
-        }
-
-        animation.setFrames(image);
-        animation.setDelay(10);
+        Bitmap[] image = createSpriteSheet(numFrames);
+        setupAnimation(image);
         startTime = System.nanoTime();
     }
 
-    public void setUp(boolean up){
+    private void setupAnimation(Bitmap[] image) {
+        animation.setFrames(image);
+        animation.setDelay(10);
+    }
+
+    @NonNull
+    private Bitmap[] createSpriteSheet(int numFrames) {
+        Bitmap[] image = new Bitmap[numFrames];
+
+        for (int i = 0; i < image.length; i++) {
+            image[i] = Bitmap.createBitmap(spritesheet, i * width, 0, width, height);
+        }
+        return image;
+    }
+
+    public void setUp(boolean up) {
         this.up = up;
     }
 
-    public void update(){
-        long elapsed = (System.nanoTime()-startTime) / 1000000;
-        if (elapsed > 100){
+    public void update() {
+        long elapsed = (System.nanoTime() - startTime) / 1000000;
+        if (elapsed > 100) {
             score++;
             startTime = System.nanoTime();
         }
         animation.update();
 
-        if (up){
+        if (up) {
             dy -= 1;
         } else dy += 1;
 
         if (dy > 14) dy = 14;
         if (dy < -14) dy = -14;
 
-        y += dy*2;
+        y += dy * 2;
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         canvas.drawBitmap(animation.getImage(), x, y, null);
     }
 
@@ -76,11 +86,11 @@ public class Player extends GameObject {
         this.playing = playing;
     }
 
-    public void resetDY(){
+    public void resetDY() {
         dy = 0;
     }
 
-    public void resetScore(){
+    public void resetScore() {
         score = 0;
     }
 }

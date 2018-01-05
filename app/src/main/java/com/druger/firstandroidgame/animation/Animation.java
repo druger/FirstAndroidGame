@@ -22,10 +22,6 @@ public class Animation {
         this.delay = delay;
     }
 
-    public void setFrame(int currentFrame) {
-        this.currentFrame = currentFrame;
-    }
-
     public void update(){
         long elapsed = (System.nanoTime() - startTime) / 1000000;
         if (elapsed > delay){
@@ -40,10 +36,6 @@ public class Animation {
 
     public Bitmap getImage() {
         return frames[currentFrame];
-    }
-
-    public int getFrame() {
-        return currentFrame;
     }
 
     public boolean isPlayedOnce() {
