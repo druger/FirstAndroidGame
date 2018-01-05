@@ -1,4 +1,4 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.animation;
 
 import android.graphics.Bitmap;
 

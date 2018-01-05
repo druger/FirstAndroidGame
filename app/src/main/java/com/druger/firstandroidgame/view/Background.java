@@ -1,4 +1,4 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.view;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

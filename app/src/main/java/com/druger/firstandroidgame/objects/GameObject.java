@@ -1,4 +1,4 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.objects;
 
 import android.graphics.Rect;
 

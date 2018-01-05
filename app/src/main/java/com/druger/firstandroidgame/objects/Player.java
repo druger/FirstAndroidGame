@@ -1,7 +1,10 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
+import com.druger.firstandroidgame.animation.Animation;
+import com.druger.firstandroidgame.view.GamePanel;
 
 
 /**

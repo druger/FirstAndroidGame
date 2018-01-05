@@ -3,6 +3,8 @@ package com.druger.firstandroidgame;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.druger.firstandroidgame.view.GamePanel;
+
 /**
  * Created by druger on 30.07.2015.
  */

@@ -1,4 +1,4 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.view;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -10,6 +10,16 @@ import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.druger.firstandroidgame.MainThread;
+import com.druger.firstandroidgame.R;
+import com.druger.firstandroidgame.animation.Explosion;
+import com.druger.firstandroidgame.objects.BotBorder;
+import com.druger.firstandroidgame.objects.GameObject;
+import com.druger.firstandroidgame.objects.Missile;
+import com.druger.firstandroidgame.objects.Player;
+import com.druger.firstandroidgame.objects.Smokepuff;
+import com.druger.firstandroidgame.objects.TopBorder;
 
 import java.util.ArrayList;
 import java.util.Random;

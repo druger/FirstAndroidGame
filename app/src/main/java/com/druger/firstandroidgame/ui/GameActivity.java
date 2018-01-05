@@ -1,4 +1,4 @@
-package com.druger.firstandroidgame;
+package com.druger.firstandroidgame.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,8 +7,11 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.druger.firstandroidgame.R;
+import com.druger.firstandroidgame.view.GamePanel;
 
-public class Game extends Activity {
+
+public class GameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
