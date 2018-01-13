@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.druger.firstandroidgame.animation.Animation;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -26,21 +27,21 @@ public class Missile extends GameObject {
 
         setupSpeed(score);
 
-        Bitmap[] image = createSpriteSheet(numFrames);
+        ArrayList<Bitmap> image = createSpriteSheet(numFrames);
         setupAnimation(image);
     }
 
-    private void setupAnimation(Bitmap[] image) {
+    private void setupAnimation(ArrayList<Bitmap> image) {
         animation.setFrames(image);
         animation.setDelay(100 - speed);
     }
 
     @NonNull
-    private Bitmap[] createSpriteSheet(int numFrames) {
-        Bitmap[] image = new Bitmap[numFrames];
+    private ArrayList<Bitmap> createSpriteSheet(int numFrames) {
+        ArrayList<Bitmap> image = new ArrayList<>(numFrames);
 
-        for (int i = 0; i < image.length; i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, 0, i * this.height, this.width, this.height);
+        for (int i = 0; i < numFrames; i++) {
+            image.add(i, Bitmap.createBitmap(spritesheet, 0, i * this.height, this.width, this.height));
         }
         return image;
     }

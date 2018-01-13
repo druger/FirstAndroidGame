@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import com.druger.firstandroidgame.animation.Animation;
 import com.druger.firstandroidgame.view.GamePanel;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by druger on 04.08.2015.
@@ -28,22 +30,22 @@ public class Player extends GameObject {
         width = w;
         spritesheet = res;
 
-        Bitmap[] image = createSpriteSheet(numFrames);
+        ArrayList<Bitmap> image = createSpriteSheet(numFrames);
         setupAnimation(image);
         startTime = System.nanoTime();
     }
 
-    private void setupAnimation(Bitmap[] image) {
+    private void setupAnimation(ArrayList<Bitmap> image) {
         animation.setFrames(image);
         animation.setDelay(10);
     }
 
     @NonNull
-    private Bitmap[] createSpriteSheet(int numFrames) {
-        Bitmap[] image = new Bitmap[numFrames];
+    private ArrayList<Bitmap> createSpriteSheet(int numFrames) {
+        ArrayList<Bitmap> image = new ArrayList<>(numFrames);
 
-        for (int i = 0; i < image.length; i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, i * width, 0, width, height);
+        for (int i = 0; i < numFrames; i++) {
+            image.add(i, Bitmap.createBitmap(spritesheet, i * width, 0, width, height));
         }
         return image;
     }
