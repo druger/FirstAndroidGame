@@ -26,7 +26,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
     private var smokeStartTime: Long = 0
     private var missileStartTime: Long = 0
     private lateinit var player: Player
-    private lateinit var thread?: MainThread
+    private lateinit var thread: MainThread
     private lateinit var bg: Background
     private lateinit var smoke: ArrayList<Smokepuff>
     private lateinit var missiles: ArrayList<Missile>
@@ -84,7 +84,6 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
                 thread.setRunning(false)
                 thread.join()
                 retry = false
-                thread = null
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
@@ -173,7 +172,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
                     break
                 }
                 //remove missile if it is way off the screen
-                if (missiles[i].getX() < -100) {
+                if (missiles[i].x < -100) {
                     missiles.removeAt(i)
                     break
                 }
@@ -182,14 +181,14 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
             //add smoke puffs on timer
             val elapsed = (System.nanoTime() - smokeStartTime) / 1000000
             if (elapsed > 120) {
-                smoke.add(Smokepuff(player.getX(), player.getY() + 10))
+                smoke.add(Smokepuff(player.x, player.y + 10))
                 smokeStartTime = System.nanoTime()
             }
 
             for (i in 0..smoke.size) {
                 smoke[i].update()
-                if (smoke[i].getX() < -10) {
-                    smoke.remove(i)
+                if (smoke[i].x < -10) {
+                    smoke.removeAt(i)
                 }
             }
         } else {
@@ -200,7 +199,7 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
                 reset = true
                 disappear = true
                 explosion = Explosion(BitmapFactory.decodeResource(resources, R.drawable.explosion),
-                        player.getX(), player.getY() - 30, 100, 100, 25)
+                        player.x, player.y - 30, 100, 100, 25)
             }
 
             explosion.update()
@@ -251,34 +250,34 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
         // every 50 points, insert randomly placed top blocks that break the pattern
         if (player.getScore() % 50 == 0) {
             topBorder.add(TopBorder(BitmapFactory.decodeResource(resources, R.drawable.brick),
-                    topBorder[topBorder.size - 1].getX() + 20, 0,
+                    topBorder[topBorder.size - 1].x + 20, 0,
                     ((rand.nextDouble() * maxBorderHeight) + 1).toInt()))
         }
 
         for (i in 0..topBorder.size) {
             topBorder[i].update()
-            if (topBorder[i].getX() < -20) {
+            if (topBorder[i].x < -20) {
                 //remove element of arraylist, replace it by adding a new one
-                topBorder.remove(i)
+                topBorder.removeAt(i)
 
                 //calculate topdown which determines the direction the border is moving (up or down)
-                if (topBorder[topBorder.size - 1].getHeight() >= maxBorderHeight) {
+                if (topBorder[topBorder.size - 1].height >= maxBorderHeight) {
                     topDown = false
                 }
-                if (topBorder[topBorder.size - 1].getHeight() <= minBorderHeight) {
+                if (topBorder[topBorder.size - 1].height <= minBorderHeight) {
                     topDown = true
                 }
                 //new border added will have larger height
                 if (topDown) {
                     topBorder.add(TopBorder(BitmapFactory.decodeResource(resources,
-                            R.drawable.brick), topBorder[topBorder.size - 1].getX() + 20,
-                            0, topBorder[topBorder.size - 1].getHeight() + 1))
+                            R.drawable.brick), topBorder[topBorder.size - 1].x + 20,
+                            0, topBorder[topBorder.size - 1].height + 1))
                 }
                 //new border added wil have smaller height
                 else {
                     topBorder.add(TopBorder(BitmapFactory.decodeResource(resources,
-                            R.drawable.brick), topBorder[topBorder.size - 1].getX() + 20,
-                            0, topBorder[topBorder.size - 1].getHeight() - 1))
+                            R.drawable.brick), topBorder[topBorder.size - 1].x + 20,
+                            0, topBorder[topBorder.size - 1].height - 1))
                 }
             }
         }
@@ -288,40 +287,40 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
         //every 40 points, insert randomly placed bottom blocks that break pattern
         if (player.getScore() % 40 == 0) {
             botBorder.add(BotBorder(BitmapFactory.decodeResource(resources, R.drawable.brick),
-                    botBorder[botBorder.size - 1].getX() + 20,
+                    botBorder[botBorder.size - 1].x + 20,
                     ((rand.nextDouble() * maxBorderHeight) + (HEIGHT - maxBorderHeight)).toInt()))
         }
 
         for (i in 0..botBorder.size) {
             botBorder[i].update()
             //if border is moving off screen, remove it and add a corresponding new one
-            if (botBorder[i].getX() < -20) {
+            if (botBorder[i].x < -20) {
                 botBorder.removeAt(i)
 
                 //calculate botdown which determines the direction the border is moving (up or down)
-                if (botBorder[botBorder.size - 1].getY() <= HEIGHT - maxBorderHeight) {
+                if (botBorder[botBorder.size - 1].y <= HEIGHT - maxBorderHeight) {
                     botDown = true
                 }
-                if (botBorder[botBorder.size - 1].getY() >= HEIGHT - minBorderHeight) {
+                if (botBorder[botBorder.size - 1].y >= HEIGHT - minBorderHeight) {
                     botDown = false
                 }
                 //new border added will have larger height
                 if (botDown) {
                     botBorder.add(BotBorder(BitmapFactory.decodeResource(resources,
-                            R.drawable.brick), botBorder[botBorder.size - 1].getX() + 20,
-                            botBorder[botBorder.size - 1].getY() + 1))
+                            R.drawable.brick), botBorder[botBorder.size - 1].x + 20,
+                            botBorder[botBorder.size - 1].y + 1))
                 }
                 //new border added wil have smaller height
                 else {
                     botBorder.add(BotBorder(BitmapFactory.decodeResource(resources,
-                            R.drawable.brick), botBorder[botBorder.size - 1].getX() + 20,
-                            botBorder[botBorder.size - 1].getY() - 1))
+                            R.drawable.brick), botBorder[botBorder.size - 1].x + 20,
+                            botBorder[botBorder.size - 1].y - 1))
                 }
             }
         }
     }
 
-    fun newGame() {
+    private fun newGame() {
 
         disappear = false
 
@@ -336,57 +335,63 @@ class GamePanel(context: Context) : SurfaceView(context), SurfaceHolder.Callback
 
         player.resetDY()
         player.resetScore()
-        player.setY(HEIGHT / 2)
+        player.y = (HEIGHT / 2)
 
         if (player.getScore() > best) {
             best = player.getScore()
         }
 
-        //create initial borders
-
-        //initial top border
-        for (int i = 0; i * 20 < WIDTH + 40; i++) {
-            //first top border create
-            if (i == 0) {
-                topBorder.add(TopBorder (BitmapFactory.decodeResource(resources,
-                        R.drawable.brick), i * 20, 0, 10))
-            } else {
-                topBorder.add(TopBorder (BitmapFactory.decodeResource(resources,
-                        R.drawable.brick), i * 20, 0, topBorder[i - 1].getHeight() + 1))
-            }
-        }
-        //initial bottom border
-        for (int i = 0; i * 20 < WIDTH + 40; i++) {
-            //first border ever created
-            if (i == 0) {
-                botBorder.add(BotBorder (BitmapFactory.decodeResource(resources,
-                        R.drawable.brick), i * 20, HEIGHT - minBorderHeight))
-            } else {
-                //adding borders until the initial screen is filed
-                botBorder.add(BotBorder (BitmapFactory.decodeResource(resources,
-                        R.drawable.brick), i * 20, botBorder[i - 1].getY() - 1))
-            }
-        }
+        initTopBorder()
+        initBottomBorder()
         newGameCreated = true
     }
+
+    private fun initTopBorder() {
+        var i = 0;
+        while (i * 20 < WIDTH + 40) {
+            if (i == 0) {
+                topBorder.add(TopBorder(BitmapFactory.decodeResource(resources,
+                        R.drawable.brick), i * 20, 0, 10))
+            } else {
+                topBorder.add(TopBorder(BitmapFactory.decodeResource(resources,
+                        R.drawable.brick), i * 20, 0, topBorder[i - 1].height + 1))
+            }
+            i++
+        }
+    }
+
+    private fun initBottomBorder() {
+        var i = 0;
+        while (i * 20 < WIDTH + 40) {
+            if (i == 0) {
+                botBorder.add(BotBorder(BitmapFactory.decodeResource(resources,
+                        R.drawable.brick), i * 20, HEIGHT - minBorderHeight))
+            } else {
+                botBorder.add(BotBorder(BitmapFactory.decodeResource(resources,
+                        R.drawable.brick), i * 20, botBorder[i - 1].y - 1))
+            }
+            i++
+        }
+    }
+
 
     fun drawText(canvas: Canvas) {
         val paint = Paint()
         paint.color = Color.BLACK
         paint.textSize = 30F
         paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        canvas.drawText("DISTANCE: " + (player.getScore() * 3), 10, HEIGHT - 10, paint)
-        canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint)
+        canvas.drawText("DISTANCE: " + (player.getScore() * 3), 10f, (HEIGHT - 10).toFloat(), paint)
+        canvas.drawText("BEST: " + best, (WIDTH - 215).toFloat(), (HEIGHT - 10).toFloat(), paint)
 
         if (!player.isPlaying() && newGameCreated && reset) {
             val paint1 = Paint()
             paint1.textSize = 40F
             paint1.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-            canvas.drawText("PRESS TO START", WIDTH / 2 - 50, HEIGHT / 2, paint1)
+            canvas.drawText("PRESS TO START", (WIDTH / 2 - 50).toFloat(), (HEIGHT / 2).toFloat(), paint1)
 
             paint1.textSize = 20F
-            canvas.drawText("PRESS AND HOLD TO GO UP", WIDTH / 2 - 50, HEIGHT / 2 + 20, paint1)
-            canvas.drawText("RELEASE TO GO DOWN", WIDTH / 2 - 50, HEIGHT / 2 + 40, paint1)
+            canvas.drawText("PRESS AND HOLD TO GO UP", (WIDTH / 2 - 50).toFloat(), (HEIGHT / 2 + 20).toFloat(), paint1)
+            canvas.drawText("RELEASE TO GO DOWN", (WIDTH / 2 - 50).toFloat(), (HEIGHT / 2 + 40).toFloat(), paint1)
         }
     }
 }
